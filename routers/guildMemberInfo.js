@@ -6,6 +6,7 @@ router.get("/", (req, res) => {
   res.send({ answer: "guildMember" });
 });
 
+// 길드원 정보(개인)
 router.get("/member", async (req, res) => {
   const nickName = req.body.nickname;
   const ifexist = await memberDB.exists({ nickName: nickName });
@@ -26,7 +27,21 @@ router.get("/member", async (req, res) => {
   res.send({ success: true, result: result });
 });
 
+// 전체 길드원 닉네임/직업/직위 list
 router.get("/all", async (req, res) => {
+  let arr = [];
+  for await (const doc of memberDB.find()) {
+    arr.push({
+      nickname: doc.nickName,
+      job: doc.job,
+      grade: doc.grade,
+    });
+  }
+  res.json({ result: arr });
+});
+
+// 전체 길드원 직위별 인원수
+router.get("/allcount", async (req, res) => {
   let bom1 = 0,
     bom2 = 0,
     bom3 = 0,
