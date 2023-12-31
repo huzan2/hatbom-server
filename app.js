@@ -6,6 +6,7 @@ const cors = require("cors");
 const memberRouter = require("./routers/guildMemberInfo.js");
 const contentsRouter = require("./routers/guildContents.js");
 const memberManageRouter = require("./routers/memberManage.js");
+const gradeHelperRouter = require("./routers/gradeHelper.js");
 const app = express();
 
 const { PORT } = process.env;
@@ -29,6 +30,7 @@ mongoose
 app.use("/guildMember", memberRouter);
 app.use("/guildContents", contentsRouter);
 app.use("/memberManage", memberManageRouter);
+app.use("/gradeHelper", gradeHelperRouter);
 app.get("/", (req, res) => {
   res.send("hello");
 });

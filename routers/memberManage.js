@@ -23,6 +23,7 @@ router.post("/newMember", async (req, res) => {
     });
   } catch {
     res.send({ success: false });
+    return;
   }
 });
 
@@ -34,6 +35,7 @@ router.post("/deleteMember", async (req, res) => {
     res.send({ success: true });
   } catch {
     res.send({ success: false });
+    return;
   }
 });
 
@@ -46,6 +48,7 @@ router.post("/editGrade", async (req, res) => {
     res.send({ success: true });
   } catch {
     res.send({ success: false });
+    return;
   }
 });
 
@@ -58,6 +61,7 @@ router.post("/editNickname", async (req, res) => {
     res.send({ success: true });
   } catch {
     res.send({ success: false });
+    return;
   }
 });
 
@@ -70,6 +74,7 @@ router.post("/editJob", async (req, res) => {
     res.send({ success: true });
   } catch {
     res.send({ success: false });
+    return;
   }
 });
 
