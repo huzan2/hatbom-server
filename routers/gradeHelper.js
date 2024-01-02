@@ -7,7 +7,7 @@ router.get("/", (req, res) => {
 });
 
 // 직위조정 결과 반영
-router.post("/auto", async (req, res) => {
+router.post("/autosave", async (req, res) => {
   try {
     for await (const doc of memberDB.find()) {
       const targetIndex = doc.guildContents.findIndex(
@@ -46,21 +46,24 @@ router.post("/auto", async (req, res) => {
 });
 
 // 자동직위조정
-router.get("/auto", async (req, res) => {
-  let mainFarr = []; // 본캐 중 길컨 미참
-  let subFarr = []; // 부캐 중 길컨 미참
-  let mainTarr = []; // 왕눈치봄에서 길컨 참여
-  let subTarr = []; // 눈치봄에서 길컨 참여
-  let elseArr = []; // 2회 이상 연속 미참
+router.post("/auto", async (req, res) => {
   try {
+    console.log(req.body);
+    let mainFarr = []; // 본캐 중 길컨 미참
+    let subFarr = []; // 부캐 중 길컨 미참
+    let mainTarr = []; // 왕눈치봄에서 길컨 참여
+    let subTarr = []; // 눈치봄에서 길컨 참여
+    let elseArr = []; // 2회 이상 연속 미참
     for await (const doc of memberDB.find()) {
       const targetIndex = doc.guildContents.findIndex(
         (e) => e.time === req.body.time
       );
+      if (targetIndex === -1) {
+        console.log("index not found");
+        res.send({ success: false });
+        return;
+      }
       if (!doc.guildContents[targetIndex].participated) {
-        if (doc.grade === "기다려봄" || doc.grade === "플래그햇봄") {
-          continue;
-        }
         if (doc.grade === "늘봄" || doc.grade === "돌봄") {
           mainFarr.push(doc.nickName);
         } else if (doc.grade === "가끔봄") {
@@ -76,20 +79,20 @@ router.get("/auto", async (req, res) => {
         }
       }
     }
+    res.send({
+      success: true,
+      time: req.body.time,
+      arr1: mainFarr,
+      arr2: subFarr,
+      arr3: mainTarr,
+      arr4: subTarr,
+      arr5: elseArr,
+    });
   } catch (e) {
     console.log(e);
-    res.send({ success: false });
+    res.send({ success: false, req: req });
     return;
   }
-  res.send({
-    success: true,
-    time: req.body.time,
-    arr1: mainFarr,
-    arr2: subFarr,
-    arr3: mainTarr,
-    arr4: subTarr,
-    arr5: elseArr,
-  });
 });
 
 module.exports = router;

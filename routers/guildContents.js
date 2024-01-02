@@ -62,6 +62,7 @@ router.post("/create", async (req, res) => {
 // 길컨 미참 캐릭터 일괄입력
 router.post("/inputfalse", async (req, res) => {
   try {
+    console.log(req.body);
     for (const nick of req.body.nickname) {
       const doc = await memberDB.findOne({ nickName: nick });
       const targetIndex = doc.guildContents.findIndex(

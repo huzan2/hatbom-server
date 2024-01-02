@@ -18,9 +18,9 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
-app.use(express.static("public"));
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: false }));
 
 mongoose
   .connect(process.env.MONGODB_URI)
