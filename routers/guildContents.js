@@ -6,6 +6,21 @@ router.get("/", (req, res) => {
   res.send({ answer: "guildContents" });
 });
 
+// 길컨 테이블 목록 불러오기
+router.get("/gclist", async (req, res) => {
+  try {
+    const doc = await memberDB.findOne({ nickName: "페달튜너" });
+    let gclist = [];
+    for await (const item of doc.guildContents) {
+      gclist.push(item.time);
+    }
+    res.send({ success: true, gclist: gclist });
+  } catch (e) {
+    console.log(e);
+    res.send({ success: false });
+  }
+});
+
 // 길컨 테이블 삭제
 router.post("/delete", async (req, res) => {
   const ifexist = await memberDB.exists({
